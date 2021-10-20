@@ -7,13 +7,14 @@ export function ensureAuthenticated(
   next: NextFunction
 ) {
   const authToken = req.headers.authorization;
-  const [, token] = authToken.split(" ");
 
-  if (!token) {
+  if (!authToken) {
     return response.status(401).json({
       errorCode: "token.invalid",
     });
   }
+
+  const [, token] = authToken.split(" ");
 
   try {
     const { sub } = verify(token, process.env.JWT_SECRET);
